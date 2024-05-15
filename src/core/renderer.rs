@@ -1,14 +1,14 @@
 use crate::wrapper::{BufferObject, ShaderProgram, VertexArrayObject, VertexAttribute};
 
-pub struct Renderer {
+pub(crate) struct Renderer {
     vertex_array_object: VertexArrayObject,
+    shader: ShaderProgram,
     vertices: Vec<f32>,
     indices: Vec<u32>,
-    shader: ShaderProgram,
 }
 
 impl Renderer {
-    pub fn new(vertices: &[f32], indices: &[u32], shader: ShaderProgram) -> Self {
+    pub(crate) fn new(vertices: &[f32], indices: &[u32], shader: ShaderProgram) -> Self {
         let vertex_array_object = VertexArrayObject::new();
         let vertex_buffer_object = BufferObject::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
         let indices_buffer_object = BufferObject::new(gl::ELEMENT_ARRAY_BUFFER, gl::STATIC_DRAW);
@@ -39,10 +39,12 @@ impl Renderer {
         }
     }
 
-    pub(crate) fn render(&self) {
+    pub(crate) fn render(&mut self) {
+        self.shader.use_program();
+        self.shader.Uniform3f("color", [1.0, 0.5, 1.0]);
+        self.vertex_array_object.bind();
+
         unsafe {
-            self.shader.use_program();
-            self.vertex_array_object.bind();
             gl::DrawElements(
                 gl::TRIANGLES,
                 self.vertices.len() as i32,
@@ -76,19 +78,11 @@ mod tests {
 
             let fragment: &str = r"
                 #version 330 core
-                
                 out vec4 FragColor;
-
-                vec3 hsv2rgb(vec3 c) {
-                    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-                    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-                    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-                }
+                uniform vec3 color;
 
                 void main() {
-                    float hue = mod(gl_FragCoord.x + gl_FragCoord.y, 360.0) / 360.0;
-                    vec3 rgbColor = hsv2rgb(vec3(hue, 1.0, 1.0));
-                    FragColor = vec4(rgbColor, 1.0);
+                    FragColor = vec4(color[0], color[1], color[2], 1.0);
                 }
             ";
 
@@ -97,12 +91,12 @@ mod tests {
             let triangle = [0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0];
             let indices = [0, 1, 2];
 
-            let renderer = Renderer::new(&triangle, &indices, shader);
+            let mut renderer = Renderer::new(&triangle, &indices, shader);
 
             let mut count = 0;
 
             while !window.should_close() {
-                window.clear(0.0, 0.0, 0.0, 0.0);
+                window.clear();
                 renderer.render();
                 window.update();
                 count += 1;
@@ -128,19 +122,11 @@ mod tests {
 
             let fragment: &str = r"
                 #version 330 core
-                
                 out vec4 FragColor;
-
-                vec3 hsv2rgb(vec3 c) {
-                    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-                    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-                    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-                }
+                uniform vec3 color;
 
                 void main() {
-                    float hue = mod(gl_FragCoord.x + gl_FragCoord.y, 360.0) / 360.0;
-                    vec3 rgbColor = hsv2rgb(vec3(hue, 1.0, 1.0));
-                    FragColor = vec4(rgbColor, 1.0);
+                    FragColor = vec4(color[0], color[1], color[2], 1.0);
                 }
             ";
 
@@ -155,12 +141,12 @@ mod tests {
 
             let indices = [0, 1, 2, 0, 2, 3];
 
-            let renderer = Renderer::new(&square, &indices, shader);
+            let mut renderer = Renderer::new(&square, &indices, shader);
 
             let mut count = 0;
 
             while !window.should_close() {
-                window.clear(0.0, 0.0, 0.0, 1.0);
+                window.clear();
                 renderer.render();
                 window.update();
                 count += 1;
