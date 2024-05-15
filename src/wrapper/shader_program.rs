@@ -1,3 +1,5 @@
+use gl::Uniform1f;
+
 pub(crate) struct ShaderProgram {
     id: gl::types::GLuint,
 }
@@ -22,6 +24,30 @@ impl ShaderProgram {
             gl::DeleteShader(fragment);
 
             return Self { id };
+        }
+    }
+
+    pub(crate) fn Uniform1f(&self, name: &str, value: f32) {
+        unsafe {
+            let name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(self.id, name.as_ptr() as *const i8);
+            gl::Uniform1f(location, value);
+        }
+    }
+
+    pub(crate) fn Uniform2f(&self, name: &str, value: [f32; 2]) {
+        unsafe {
+            let name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(self.id, name.as_ptr() as *const i8);
+            gl::Uniform2f(location, value[0], value[1]);
+        }
+    }
+
+    pub(crate) fn Uniform3f(&self, name: &str, value: [f32; 3]) {
+        unsafe {
+            let name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(self.id, name.as_ptr() as *const i8);
+            gl::Uniform3f(location, value[0], value[1], value[2]);
         }
     }
 
@@ -91,4 +117,3 @@ pub mod tests {
         }
     }
 }
-
