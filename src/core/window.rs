@@ -28,6 +28,10 @@ impl Window {
         window.make_current();
         window.set_key_polling(true);
 
+        unsafe {
+            gl::Viewport(0, 0, 600, 400);
+        }
+
         Self {
             window,
             events,
@@ -48,10 +52,10 @@ impl Window {
         self.glfw.poll_events();
     }
 
-    pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
+    pub fn clear(&self) {
         unsafe {
             gl::Clear(gl::COLOR_BUFFER_BIT);
-            gl::ClearColor(r, g, b, a);
+            gl::ClearColor(0.0, 0.0, 0.0, 1.0);
         }
     }
 }
