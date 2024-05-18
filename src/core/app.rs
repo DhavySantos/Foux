@@ -22,7 +22,7 @@ impl App {
         let mut frames = 0;
 
         while !self.window.should_close() {
-            let delta = Instant::now().duration_since(latest_frame);
+            let delta = Instant::now().duration_since(latest_frame).as_secs_f64();
             latest_frame = Instant::now();
 
             self.window.clear();
@@ -36,10 +36,7 @@ impl App {
             }
 
             if Instant::now() - latest_second >= Duration::from_secs_f64(1.0) {
-                let title = format!(
-                    "foux engine fps: {frames} | ftime: {}ms",
-                    delta.as_secs_f64()
-                );
+                let title = format!("foux engine fps: {frames} | ftime: {delta}ms");
                 self.window.set_title(title.as_str());
                 latest_second = Instant::now();
                 frames = 0;
