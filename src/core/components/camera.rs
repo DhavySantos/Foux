@@ -1,37 +1,34 @@
-#[derive(Default)]
+use cgmath::{Vector2, Vector3};
+
 pub struct Camera {
-    position: [f32; 3],
-    rotation: [f32; 3],
-    distance: [f32; 2],
+    position: Vector3<f32>,
+    rotation: Vector3<f32>,
+    distance: Vector2<f32>,
     fov: f32,
 }
 
 impl Camera {
-    pub fn new() -> Camera {
-        Camera::default()
-    }
-
-    pub fn position(&self) -> [f32; 3] {
+    pub fn position(&self) -> Vector3<f32> {
         self.position
     }
 
-    pub fn rotation(&self) -> [f32; 3] {
+    pub fn rotation(&self) -> Vector3<f32> {
         self.rotation
     }
 
-    pub fn distance(&self) -> [f32; 2] {
+    pub fn distance(&self) -> Vector2<f32> {
         self.distance
     }
 
-    pub fn set_position(&mut self, position: [f32; 3]) {
+    pub fn set_position(&mut self, position: Vector3<f32>) {
         self.position = position;
     }
 
-    pub fn set_rotation(&mut self, rotation: [f32; 3]) {
+    pub fn set_rotation(&mut self, rotation: Vector3<f32>) {
         self.rotation = rotation;
     }
 
-    pub fn set_distance(&mut self, distance: [f32; 2]) {
+    pub fn set_distance(&mut self, distance: Vector2<f32>) {
         self.distance = distance;
     }
 }
