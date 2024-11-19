@@ -1,18 +1,13 @@
 use crate::core::Window;
 
-pub struct Engine {
-    window: Window,
-}
+pub struct Engine {}
 
 impl Engine {
-    pub fn new(title: &str) -> Engine {
-        let window = Window::new(title, 800, 640);
-        Engine { window }
-    }
-
     pub fn run(&mut self) {
-        while !self.window.should_close() {
-            self.window.update();
+        let mut window = Window::new("Foux Engine", 800, 640);
+        while !window.should_close() {
+            window.clear(0.3, 0.7, 0.3, 1.0);
+            window.update();
         }
     }
 }
