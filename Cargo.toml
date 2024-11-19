@@ -3,6 +3,7 @@ name = "foux"
 edition = "2021"
 version = "0.0.2"
 author = "DhavySantos"
+description = "Foux Game Engine"
 
 [dependencies]
 cgmath = "0.18.0"
