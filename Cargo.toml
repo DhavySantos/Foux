@@ -2,7 +2,9 @@
 name = "foux"
 edition = "2021"
 version = "0.0.2"
+license = "GPL"
 author = "DhavySantos"
+license-path = "license"
 description = "Foux Game Engine"
 
 [dependencies]
