@@ -23,3 +23,9 @@ impl Default for VertexArrayObject {
         VertexArrayObject { id }
     }
 }
+
+impl Drop for VertexArrayObject {
+    fn drop(&mut self) {
+        unsafe { gl::DeleteVertexArrays(1, &self.id) }
+    }
+}
