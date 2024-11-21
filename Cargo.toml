@@ -5,6 +5,7 @@ version = "0.0.3"
 license = "GPL-3.0"
 author = "DhavySantos"
 description = "Foux Game Engine"
+repository = "https://github.com/dhavysantos/foux"
 
 [dependencies]
 glfw = "0.58.0"
