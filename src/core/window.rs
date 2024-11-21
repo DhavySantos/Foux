@@ -94,6 +94,7 @@ impl Window {
     /// * `title` - The new title to set for the window.
     pub fn set_title(&mut self, title: &str) {
         self.title = String::from(title);
+        self.pwindow.set_title(title);
     }
 
     /// Checks if the window should close.
