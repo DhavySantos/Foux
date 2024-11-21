@@ -1,4 +1,5 @@
 pub mod components;
+pub mod ecs;
 
 mod engine;
 mod window;
