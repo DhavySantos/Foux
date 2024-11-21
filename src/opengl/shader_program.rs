@@ -1,7 +1,8 @@
-use cgmath::{Matrix, Matrix4};
 use std::collections::HashMap;
 use std::ffi::{c_void, CString};
 use std::ptr;
+
+use nalgebra_glm::Mat4;
 
 /// Represents an OpenGL shader program, providing utilities for shader management
 /// and uniform variable handling.
@@ -125,7 +126,7 @@ impl ShaderProgram {
     /// # Panics
     ///
     /// This function will panic if the uniform is not found in the `uniforms_ids` map.
-    pub fn set_matrix4fv_uniform(&self, uniform_name: &str, matrix: &Matrix4<f32>) {
+    pub fn set_matrix4fv_uniform(&self, uniform_name: &str, matrix: &Mat4) {
         if let Some(&location) = self.uniforms_ids.get(uniform_name) {
             unsafe { gl::UniformMatrix4fv(location, 1, gl::FALSE, matrix.as_ptr()) };
         }
